@@ -29491,6 +29491,25 @@
       "itemsNeedYou_other": "{{count}} items it flagged for you",
       "review": "Review",
       "openHome": "Open {{name}}’s Home"
+    },
+    "folders": {
+      "expand": "Expand {{name}}",
+      "collapse": "Collapse {{name}}",
+      "renameMenu": "Rename folder",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "deleteMenu": "Delete folder",
+      "moveTo": "Move to folder",
+      "newFolderMenu": "New folder…",
+      "removeFromFolder": "Remove from folder",
+      "renameTitle": "Rename Folder",
+      "newTitle": "New Folder",
+      "renameDescription": "Update the folder name shown in Bots.",
+      "newDescription": "Sort bots and group chats into a folder you can fold.",
+      "nameLabel": "Folder Name",
+      "rename": "Rename",
+      "create": "Create",
+      "newFolder": "New folder"
     }
   },
   "plugins": {

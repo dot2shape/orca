@@ -20,6 +20,7 @@ import {
   botAvatarBadgeCutout,
   useBotAvatarBadgeSleeping
 } from './bot-avatar-status-badge'
+import { BotSidebarFolderMenuItems } from './BotSidebarFolderMenu'
 
 /** One row of the Bots section, a bot's or a group's: picture, name and time, then its newest line. */
 export type BotSidebarRowProps = {
@@ -184,6 +185,7 @@ export function BotSidebarRow({
           {isUnread ? <BellOff className="size-3.5" /> : <Bell className="size-3.5" />}
           {isUnread ? t('bots.row.markRead', 'Mark Read') : t('bots.row.markUnread', 'Mark Unread')}
         </ContextMenuItem>
+        <BotSidebarFolderMenuItems />
         {menuFooter}
       </ContextMenuContent>
     </ContextMenu>

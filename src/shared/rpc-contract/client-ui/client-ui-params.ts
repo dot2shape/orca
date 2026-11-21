@@ -22,6 +22,7 @@ import { ClientUiWorkspaceFilterFields } from './client-ui-workspace-filter-fiel
 import { TaskResumeState } from './task-resume-state-params'
 import { WorkspaceCleanup } from '../workspace-cleanup/workspace-cleanup-ui-params'
 import { omitUndefinedValues, tolerateUnknownValues } from './ui-update-value-tolerance-params'
+import { BotSidebarFoldersParam } from './bot-sidebar-folders-param'
 
 export const NullableString = z.string().nullable()
 
@@ -159,6 +160,7 @@ export const UiUpdateFields = z
       })
       .optional(),
     botChatFolds: z.record(z.string(), z.enum(['open', 'folded'])).optional(),
+    botSidebarFolders: BotSidebarFoldersParam.optional(),
     agentsShowChildAgents: z.boolean().optional(),
     agentsCompactMode: z.boolean().optional(),
     agentsShowSearch: z.boolean().optional(),

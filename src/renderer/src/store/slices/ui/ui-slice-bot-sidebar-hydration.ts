@@ -2,6 +2,7 @@ import type { PersistedUIState } from '../../../../../shared/orca-profiles/persi
 import { normalizeSidebarBotsHeight } from '../../../../../shared/sidebar-bots-height'
 import { normalizeBotSidebarView } from '../../../../../shared/bots/bot-sidebar-view'
 import { normalizeBotChatFolds } from '../../../../../shared/bots/bot-chat-tree'
+import { normalizeBotSidebarFolders } from '../../../../../shared/bots/bot-sidebar-folders'
 import type { UISlice } from './ui-slice-contract'
 import { hydrateAgentReadState } from './ui-slice-hydration-values'
 
@@ -15,6 +16,7 @@ export function hydrateBotSidebarState(
   | 'hideBotCreatedWorkspaces'
   | 'botSidebarView'
   | 'botChatFolds'
+  | 'botSidebarFolders'
   | 'sidebarBotsHeight'
   | 'sidebarProjectsFirst'
 > {
@@ -22,6 +24,7 @@ export function hydrateBotSidebarState(
     hideBotCreatedWorkspaces: ui.hideBotCreatedWorkspaces !== false,
     botSidebarView: normalizeBotSidebarView(ui.botSidebarView),
     botChatFolds: normalizeBotChatFolds(ui.botChatFolds),
+    botSidebarFolders: normalizeBotSidebarFolders(ui.botSidebarFolders),
     sidebarBotsHeight: normalizeSidebarBotsHeight(ui.sidebarBotsHeight),
     sidebarProjectsFirst: ui.sidebarProjectsFirst === true
   }

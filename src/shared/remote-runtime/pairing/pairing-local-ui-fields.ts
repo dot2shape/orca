@@ -25,6 +25,7 @@ export const PAIRING_LOCAL_UI_FIELDS = [
   'hideBotCreatedWorkspaces',
   'botSidebarView',
   'botChatFolds',
+  'botSidebarFolders',
   'agentsShowChildAgents',
   'agentsCompactMode',
   'agentsShowSearch',
