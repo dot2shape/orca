@@ -1,0 +1,40 @@
+# Fork-only CI (dot2shape/orca). Upstream workflows stay disabled in this fork; never send this file upstream.
+name: fork-check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: fork-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-changed:
+    runs-on: [self-hosted, d2s-mini]
+    timeout-minutes: 45
+    steps:
+      - name: Disk guard (mac mini serves other apps)
+        run: |
+          free_gb=$(df -g "$HOME" | awk 'NR==2 {print $4}')
+          echo "free: ${free_gb}GB"
+          if [ "$free_gb" -lt 8 ]; then
+            echo "::error::Less than 8GB free on the runner; refusing to install Orca dependencies."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Enable pnpm
+        run: |
+          npm install -g corepack@latest
+          corepack enable
+          pnpm --version
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: check:changed
+        run: pnpm check:changed --base=origin/${{ github.base_ref || 'main' }}
