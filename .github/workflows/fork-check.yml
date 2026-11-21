@@ -11,6 +11,8 @@ concurrency:
 
 jobs:
   check-changed:
+    # Public fork: never run code from other forks' PRs on the owner's machine.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: [self-hosted, d2s-mini]
     timeout-minutes: 45
     steps:
