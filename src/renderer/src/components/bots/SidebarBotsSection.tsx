@@ -277,8 +277,8 @@ export function SidebarBotsSection({
                       entryId: entry.id,
                       requestFolderName: folderNameDialog.request
                     }
-                    return entry.kind === 'group' ? (
-                      <BotSidebarFolderMenuProvider value={folderMenu}>
+                    const rowNode =
+                      entry.kind === 'group' ? (
                         <BotSidebarDragFrame id={entry.id} drag={entryDrag}>
                           <BotGroupRow
                             group={entry.group}
@@ -291,9 +291,7 @@ export function SidebarBotsSection({
                             dragHandle={draggable}
                           />
                         </BotSidebarDragFrame>
-                      </BotSidebarFolderMenuProvider>
-                    ) : (
-                      <BotSidebarFolderMenuProvider value={folderMenu}>
+                      ) : (
                         <BotSidebarEntry
                           bot={entry.bot}
                           home={entry.home}
@@ -301,6 +299,11 @@ export function SidebarBotsSection({
                           onOpen={onOpenBot}
                           drag={entryDrag}
                         />
+                      )
+                    return (
+                      <BotSidebarFolderMenuProvider value={folderMenu}>
+                        {/* A folder's rows sit one step in, under its header's chevron. */}
+                        {row.folderId ? <div className="pl-3">{rowNode}</div> : rowNode}
                       </BotSidebarFolderMenuProvider>
                     )
                   }}
