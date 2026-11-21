@@ -1,6 +1,5 @@
 import { useAppStoreWithHostStatuses } from '@/store/slices/runtime-status/views/use-runtime-status-view'
 import React, { useCallback, useMemo } from 'react'
-import { createPortal } from 'react-dom'
 import { useAppStore } from '@/store'
 import { selectSidebarChildrenByParentIdentity } from '@/store/slices/worktrees/metadata/cross-store-lineage-parents'
 import { useShallow } from 'zustand/react/shallow'
@@ -44,7 +43,7 @@ import { useWorktreeStatusMutations } from '../drag/use-status-mutations'
 import { shouldFiltersHideAllRows } from './sidebar-empty-state-gate'
 import { buildWorktreeManualOrderCatalog } from '../drag/worktree-manual-order-catalog'
 import { useWorkspaceBoardStatuses } from '../../workspace-status/presentation/use-workspace-board-statuses'
-import { ProjectsCollapseAllButton } from '../controls/ProjectsCollapseAllButton'
+import { ProjectsHeaderControls } from '../controls/ProjectsHeaderControls'
 import { useProjectsCollapseShortcut } from '../controls/use-projects-collapse-shortcut'
 import { useProjectsCollapseAllAnnouncement } from '../controls/use-projects-collapse-all-announcement'
 import {
@@ -292,15 +291,13 @@ const WorktreeList = React.memo(function WorktreeList({
 
   return (
     <>
-      {projectsCollapseTarget && projectCollapseKeys.length > 0
-        ? createPortal(
-            <ProjectsCollapseAllButton
-              allCollapsed={allProjectsCollapsed}
-              onToggle={handleToggleAllProjects}
-            />,
-            projectsCollapseTarget
-          )
-        : null}
+      <ProjectsHeaderControls
+        target={projectsCollapseTarget}
+        hostId={defaultHostId}
+        onCreateGroup={groupBy === 'repo' ? projectGroupDialogs.handleCreateEmptyGroup : null}
+        allCollapsed={allProjectsCollapsed}
+        onToggleAll={projectCollapseKeys.length > 0 ? handleToggleAllProjects : null}
+      />
       <SidebarWorktreeListDialogs
         dialogs={projectGroupDialogs}
         repos={repos}
@@ -355,6 +352,7 @@ const WorktreeList = React.memo(function WorktreeList({
         handleMoveProjectToGroup={projectGroupDialogs.handleMoveProjectToGroup}
         handleRemoveProjectFromGroup={projectGroupDialogs.handleRemoveProjectFromGroup}
         handleRenameProjectGroup={projectGroupDialogs.handleRenameProjectGroup}
+        handleCreateEmptyGroup={projectGroupDialogs.handleCreateEmptyGroup}
         handleDeleteProjectGroup={projectGroupDialogs.handleDeleteProjectGroup}
         handleRefreshProjectGroup={projectGroupDialogs.handleRefreshProjectGroup}
         handleCreateFolderWorkspace={handleCreateFolderWorkspace}

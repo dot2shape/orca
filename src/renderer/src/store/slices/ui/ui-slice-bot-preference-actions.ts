@@ -2,6 +2,7 @@ import type { UISlice, UISliceGet, UISliceSet } from './ui-slice-contract'
 import { normalizeSidebarBotsHeight } from '../../../../../shared/sidebar-bots-height'
 import { DEFAULT_BOT_SIDEBAR_VIEW } from '../../../../../shared/bots/bot-sidebar-view'
 import { botChatFoldKey, withBotChatFold } from '../../../../../shared/bots/bot-chat-tree'
+import { EMPTY_BOT_SIDEBAR_FOLDERS } from '../../../../../shared/bots/bot-sidebar-folders'
 
 /** The bot sidebar's persisted preferences: its height, view, chat folds and hidden bot workspaces. */
 export function createUiBotPreferenceActions(set: UISliceSet, get: UISliceGet): Partial<UISlice> {
@@ -25,6 +26,16 @@ export function createUiBotPreferenceActions(set: UISliceSet, get: UISliceGet): 
       const botChatFolds = withBotChatFold(get().botChatFolds, key, fold)
       set({ botChatFolds })
       window.api.ui.set({ botChatFolds }).catch(console.error)
+    },
+    botSidebarFolders: EMPTY_BOT_SIDEBAR_FOLDERS,
+    updateBotSidebarFolders: (edit) => {
+      const current = get().botSidebarFolders
+      const botSidebarFolders = edit(current)
+      if (botSidebarFolders === current) {
+        return
+      }
+      set({ botSidebarFolders })
+      window.api.ui.set({ botSidebarFolders }).catch(console.error)
     },
     sidebarBotsHeight: null,
     setSidebarBotsHeight: (height) => {

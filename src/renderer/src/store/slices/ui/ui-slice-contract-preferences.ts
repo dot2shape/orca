@@ -27,6 +27,7 @@ import type { StatusBarUsageMode } from '../../../../../shared/status-bar/status
 import type { PersistedUIWriteBaseline } from './persisted-ui-write-baseline'
 import type { UISliceCore } from './ui-slice-contract-core'
 import type { BotSidebarView } from '../../../../../shared/bots/bot-sidebar-view'
+import type { BotSidebarFolders } from '../../../../../shared/bots/bot-sidebar-folders'
 import type { BotChatFold } from '../../../../../shared/bots/bot-chat-tree'
 
 export type UISlicePreferences = {
@@ -69,6 +70,9 @@ export type UISlicePreferences = {
   botChatFold: (hostId: string, botId: string, chatId: string) => BotChatFold | undefined
   /** Null clears the manual choice, so the chat folds by its default again. */
   setBotChatFold: (hostId: string, botId: string, chatId: string, fold: BotChatFold | null) => void
+  botSidebarFolders: BotSidebarFolders
+  /** Applies a folder edit from `bot-sidebar-folders` and saves the result. */
+  updateBotSidebarFolders: (edit: (current: BotSidebarFolders) => BotSidebarFolders) => void
   hideDetachedHeadWorkspaces: boolean
   setHideDetachedHeadWorkspaces: (v: boolean) => void
   hideWorkspacesFromOtherDevices: boolean

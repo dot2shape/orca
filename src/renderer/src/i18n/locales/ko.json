@@ -5681,7 +5681,8 @@
         },
         "SidebarHeader": {
           "92154beb7e": "새로운 워크스페이스",
-          "addProject": "프로젝트 추가"
+          "addProject": "프로젝트 추가",
+          "newProjectGroup": "새 그룹"
         },
         "SidebarNav": {
           "80611a8b10": "검색",
@@ -5997,7 +5998,11 @@
           "hideChildWorkspaces_other": "하위 워크스페이스 {{count}}개 숨기기",
           "childCount_other": "하위 {{count}}개",
           "groupProjectsRemained_other": "그룹을 삭제한 후 포함된 프로젝트 {{count}}개 중 {{remaining}}개가 남았습니다.",
-          "hostServerReplaced": "다른 서버: 삭제 후 연결"
+          "hostServerReplaced": "다른 서버: 삭제 후 연결",
+          "newSubgroupTitle": "새 하위 그룹",
+          "newEmptyGroupDesc": "빈 그룹을 만듭니다. 프로젝트 메뉴에서 프로젝트를 이 그룹으로 옮기세요.",
+          "newSubgroup": "새 하위 그룹",
+          "groupCreateFailed": "그룹을 만들지 못했습니다"
         },
         "WorktreeMetaDialog": {
           "3db0a2a593": "취소",
@@ -24060,6 +24065,25 @@
       "youAndOthers_other": "나 외 {{count}}명",
       "shareAction": "공유",
       "sharingOn": "켜짐"
+    },
+    "folders": {
+      "expand": "{{name}} 펼치기",
+      "collapse": "{{name}} 접기",
+      "renameMenu": "폴더 이름 바꾸기",
+      "moveUp": "위로 이동",
+      "moveDown": "아래로 이동",
+      "deleteMenu": "폴더 삭제",
+      "moveTo": "폴더로 이동",
+      "newFolderMenu": "새 폴더…",
+      "removeFromFolder": "폴더에서 빼기",
+      "renameTitle": "폴더 이름 바꾸기",
+      "newTitle": "새 폴더",
+      "renameDescription": "봇 섹션에 표시되는 폴더 이름을 바꿉니다.",
+      "newDescription": "봇과 그룹 채팅을 접을 수 있는 폴더로 정리합니다.",
+      "nameLabel": "폴더 이름",
+      "rename": "이름 바꾸기",
+      "create": "만들기",
+      "newFolder": "새 폴더"
     }
   },
   "speechModelUpdate": {

@@ -45,7 +45,10 @@ const BOT_WORKSPACE_LINE_INDENT_NEW_CARD_STYLE = 27
 /** A bot's row with the workspaces its workers made, one Compact line each under the bot's avatar. */
 /** The Bots section's reorder, which measures each entry, workspaces included, by these attributes. */
 export type BotSidebarEntryDrag = {
+  /** Its place among the rows it can be dragged between: the top level's, or its folder's. */
   index: number
+  /** Which rows those are; the top level when absent. */
+  bucket?: string
   dragging: boolean
   /** Some bot is dragging, so rows slide to their drop offsets. */
   settling: boolean
@@ -321,7 +324,9 @@ export function BotSidebarDragFrame({
       data-bot-sidebar-entry={id}
       data-project-group-header-id={drag ? id : undefined}
       data-project-group-header-index={drag?.index}
-      data-project-group-header-bucket={drag ? ROOT_PROJECT_GROUP_HEADER_BUCKET : undefined}
+      data-project-group-header-bucket={
+        drag ? (drag.bucket ?? ROOT_PROJECT_GROUP_HEADER_BUCKET) : undefined
+      }
       onPointerDown={drag?.onPointerDown}
     >
       {/* Only the content slides, so the drag keeps measuring the frame where it stands. */}

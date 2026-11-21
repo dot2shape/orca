@@ -1,5 +1,5 @@
 import React from 'react'
-import { Ellipsis, Plus, RefreshCw } from 'lucide-react'
+import { Ellipsis, FolderTree, Pencil, Plus, RefreshCw, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
@@ -29,6 +29,7 @@ export function ProjectGroupHeaderMenu({
   projectGroup,
   onRefreshProjectGroup,
   onRename,
+  onCreateSubgroup,
   onDelete
 }: {
   groupId: string
@@ -38,6 +39,7 @@ export function ProjectGroupHeaderMenu({
   projectGroup: ProjectGroup | null
   onRefreshProjectGroup?: (projectGroup: ProjectGroup) => void
   onRename: (groupId: string, currentName: string, hostId?: ExecutionHostId) => void
+  onCreateSubgroup?: (hostId: ExecutionHostId, parentGroupId: string) => void
   onDelete: (groupId: string, groupName: string, hostId?: ExecutionHostId) => void
 }): React.JSX.Element {
   const t = useTranslate()
@@ -81,10 +83,18 @@ export function ProjectGroupHeaderMenu({
             {t('auto.components.sidebar.WorktreeList.refreshProjectGroup', 'Refresh projects')}
           </DropdownMenuItem>
         ) : null}
+        {onCreateSubgroup && hostId ? (
+          <DropdownMenuItem onSelect={() => onCreateSubgroup(hostId, groupId)}>
+            <FolderTree className="size-3.5" />
+            {t('auto.components.sidebar.WorktreeList.newSubgroup', 'New subgroup')}
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem onSelect={() => onRename(groupId, label, hostId)}>
+          <Pencil className="size-3.5" />
           {t('auto.components.sidebar.WorktreeList.4d7b73658c', 'Rename group')}
         </DropdownMenuItem>
         <DropdownMenuItem variant="destructive" onSelect={() => onDelete(groupId, label, hostId)}>
+          <Trash2 className="size-3.5" />
           {t('auto.components.sidebar.WorktreeList.902115cdbe', 'Delete group')}
         </DropdownMenuItem>
       </DropdownMenuContent>
