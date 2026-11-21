@@ -7451,7 +7451,8 @@
           "92154beb7e": "New workspace",
           "addProject": "Add project",
           "expandAllProjects": "Expand all projects",
-          "collapseAllProjects": "Collapse all projects"
+          "collapseAllProjects": "Collapse all projects",
+          "newProjectGroup": "New group"
         },
         "SidebarNav": {
           "80611a8b10": "Search",
@@ -7797,7 +7798,11 @@
           "hostVmSetupFailed": "Setup failed",
           "hostVmSuspended": "Suspended",
           "hostVmWaking": "Waking…",
-          "hostVmProvisioning": "Provisioning…"
+          "hostVmProvisioning": "Provisioning…",
+          "newSubgroupTitle": "New Subgroup",
+          "newEmptyGroupDesc": "Create an empty group. Move projects into it from their menu.",
+          "newSubgroup": "New subgroup",
+          "groupCreateFailed": "Failed to create group"
         },
         "WorktreeMetaDialog": {
           "3db0a2a593": "Cancel",

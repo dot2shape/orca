@@ -19,6 +19,8 @@ import {
 
 export type ProjectGroupNameDialogState =
   | { type: 'create-from-repo'; repo: Repo }
+  // An empty group on `hostId`; with a parent it is that group's subgroup.
+  | { type: 'create-empty'; hostId: ExecutionHostId; parentGroupId: string | null }
   // hostId is the group row's owner host, so the mutation is not routed to whichever host has focus.
   | {
       type: 'rename'
@@ -97,6 +99,13 @@ export function useProjectGroupDialogs(args: {
     setNameDialog({ type: 'create-from-repo', repo })
   }, [])
 
+  const handleCreateEmptyGroup = useCallback(
+    (hostId: ExecutionHostId, parentGroupId: string | null = null) => {
+      setNameDialog({ type: 'create-empty', hostId, parentGroupId })
+    },
+    []
+  )
+
   const handleMoveProjectToGroup = useCallback(
     (repo: Repo, groupId: string) => {
       if (repo.projectGroupId === groupId) {
@@ -169,6 +178,18 @@ export function useProjectGroupDialogs(args: {
         const group = await createProjectGroup(name, getRepoExecutionHostId(nameDialog.repo))
         if (group) {
           await moveProjectToGroup(nameDialog.repo, group.id)
+        }
+        return
+      }
+      if (nameDialog.type === 'create-empty') {
+        const group = await createProjectGroup(name, nameDialog.hostId, nameDialog.parentGroupId)
+        if (!group) {
+          toast.error(
+            translate(
+              'auto.components.sidebar.WorktreeList.groupCreateFailed',
+              'Failed to create group'
+            )
+          )
         }
         return
       }
@@ -274,6 +295,7 @@ export function useProjectGroupDialogs(args: {
     removeContainedProjects,
     deleteUnsavedTargets,
     handleCreateGroupFromRepo,
+    handleCreateEmptyGroup,
     handleMoveProjectToGroup,
     handleRemoveProjectFromGroup,
     handleRefreshProjectGroup,

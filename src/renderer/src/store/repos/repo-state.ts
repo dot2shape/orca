@@ -245,8 +245,12 @@ export type RepoSlice = {
     runtimeEnvironmentId: string | null
     mode: 'group' | 'separate'
   }) => Promise<ProjectGroupImportResult | null>
-  /** `hostId` is the host of the project that seeds the group. */
-  createProjectGroup: (name: string, hostId: ExecutionHostId) => Promise<ProjectGroup | null>
+  /** `hostId` is the host of the project that seeds the group; a `parentGroupId` makes it a subgroup. */
+  createProjectGroup: (
+    name: string,
+    hostId: ExecutionHostId,
+    parentGroupId?: string | null
+  ) => Promise<ProjectGroup | null>
   createFolderWorkspace: (
     args: FolderWorkspaceCreateInput,
     options: FolderWorkspacePathStatusRouteOptions & { signal?: AbortSignal }
