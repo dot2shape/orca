@@ -24,7 +24,19 @@ describe('parseBotDeepLink', () => {
     expect(formatBotDeepLink({ botId: 'bot-2' })).toBe('orca://bot/bot-2')
   })
 
+  it('reads a bare link’s item by its number or uid, which opens it in the bot’s Items tab', () => {
+    expect(parseBotDeepLink('orca://bot/bot_1?item=42')).toEqual({ botId: 'bot_1', botItem: '42' })
+    expect(parseBotDeepLink('orca://bot/bot_1?item=itm_7Qx-2')).toEqual({
+      botId: 'bot_1',
+      botItem: 'itm_7Qx-2'
+    })
+    expect(formatBotDeepLink({ botId: 'bot_1', botItem: '42' })).toBe('orca://bot/bot_1?item=42')
+  })
+
   it.each([
+    'orca://bot/bot_1?item=',
+    'orca://bot/bot_1?item=4%202',
+    'orca://bot/bot_1?item=..%2F1',
     'orca://bot/%2e%2e?conversation=slack:T1',
     'orca://bot/a%2Fb?conversation=slack:T1',
     'orca://bot/a/b?conversation=slack:T1',

@@ -8,6 +8,8 @@ export type BotDeepLink = {
   conversation?: { source: ConnectorSource; externalId: string }
   sessionId?: string
   itemId?: string
+  /** `orca://bot/<botId>?item=<number or uid>`: the bot's Home with that item open in its Items tab. */
+  botItem?: string
 }
 
 export type ConnectorLinkSource = ConnectorConnectSource
@@ -25,7 +27,7 @@ export type BotAccessRequestDeepLink = { token: string }
 export type BotDeepLinkOutcome =
   | { kind: 'chat'; workspaceId: string; sessionId: string; itemId?: string }
   // `conversation`: this computer has no chat for the link's thread, so it may be another computer's bot.
-  | { kind: 'home'; botId: string; conversation?: BotDeepLink['conversation'] }
+  | { kind: 'home'; botId: string; conversation?: BotDeepLink['conversation']; botItem?: string }
   | { kind: 'missing' }
   | ({ kind: 'connector-link' } & ConnectorLinkDeepLink)
   | ({ kind: 'access-request' } & BotAccessRequestDeepLink)
@@ -57,7 +59,12 @@ export function parseBotDeepLink(value: string): BotDeepLink | null {
   }
   const conversation = url.searchParams.get('conversation')
   if (conversation === null) {
-    return { botId }
+    // An item's number (as `orca bot item` prints it) or its uid; the host resolves either.
+    const botItem = url.searchParams.get('item')
+    if (botItem === null) {
+      return { botId }
+    }
+    return BOT_ID_PATTERN.test(botItem) ? { botId, botItem } : null
   }
   const separator = conversation.indexOf(':')
   const source = conversation.slice(0, separator)
@@ -81,8 +88,17 @@ export function parseBotDeepLink(value: string): BotDeepLink | null {
   }
 }
 
-export function formatBotDeepLink({ botId, conversation, sessionId, itemId }: BotDeepLink): string {
+export function formatBotDeepLink({
+  botId,
+  conversation,
+  sessionId,
+  itemId,
+  botItem
+}: BotDeepLink): string {
   const url = new URL(`orca://bot/${botId}`)
+  if (!conversation && botItem) {
+    url.searchParams.set('item', botItem)
+  }
   if (conversation) {
     url.searchParams.set('conversation', `${conversation.source}:${conversation.externalId}`)
     if (sessionId) {

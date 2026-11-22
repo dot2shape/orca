@@ -23702,7 +23702,8 @@
   },
   "bots": {
     "deepLink": {
-      "missing": "이 대화는 이 컴퓨터에서 열려 있지 않습니다."
+      "missing": "이 대화는 이 컴퓨터에서 열려 있지 않습니다.",
+      "itemNotThisBot": "그 항목은 다른 봇의 항목입니다."
     },
     "activity": {
       "title": "활동"

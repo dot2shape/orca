@@ -7,6 +7,7 @@ import type { BotDeepLinkOutcome } from '../../../../shared/bot-deep-link'
 import { watchAccessRequests } from '@/lib/bot-access-requests'
 import { openAccessRequestLink, openBotLinkHome } from '@/lib/bot-link-open'
 import { openBotShareLink } from '@/components/bots/sharing/bot-share-receive-open'
+import { openBotItemLink } from '@/components/bots/items/bot-item-link-open'
 import { botGitHubErrorMessage } from '@/components/bots/github/bot-github-copy'
 import { botLinearErrorMessage } from '@/components/bots/linear/bot-linear-copy'
 import { redeemConnectorLink } from '@/lib/connector-connect-state'
@@ -26,7 +27,12 @@ function openBotLink(outcome: BotDeepLinkOutcome): void {
       botHostTarget(LOCAL_EXECUTION_HOST_ID)
     )
   } else if (outcome.kind === 'home') {
-    void openBotLinkHome(outcome.botId, outcome.conversation ?? null)
+    const { botItem } = outcome
+    void openBotLinkHome(outcome.botId, outcome.conversation ?? null).then((bot) => {
+      if (bot && botItem) {
+        void openBotItemLink(bot, botItem)
+      }
+    })
   } else if (outcome.kind === 'missing') {
     toast.info(translate('bots.deepLink.missing', "That conversation isn't open on this computer."))
   } else if (outcome.kind === 'bot-share') {
