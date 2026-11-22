@@ -16,7 +16,7 @@ export async function openBotDeepLink(
   ) => Promise<readonly { host: string; chatSessionId: string | null; worktreeId: string | null }[]>
 ): Promise<BotDeepLinkOutcome> {
   if (!link.conversation) {
-    return { kind: 'home', botId: link.botId }
+    return { kind: 'home', botId: link.botId, ...(link.botItem ? { botItem: link.botItem } : {}) }
   }
   const linked = findLink(store, link.conversation)
   if (

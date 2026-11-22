@@ -48,6 +48,10 @@ describe('openBotDeepLink', () => {
       botId: 'bot_1'
     })
 
+    expect(
+      await openBotDeepLink(storeWith([CHAT_LINK]), { botId: 'bot_1', botItem: '42' })
+    ).toEqual({ kind: 'home', botId: 'bot_1', botItem: '42' })
+
     const missing = { kind: 'home', botId: 'bot_1', conversation: LINK.conversation }
     expect(
       await openBotDeepLink(storeWith([{ ...CHAT_LINK, externalId: 'T1:C1:2' }]), LINK)

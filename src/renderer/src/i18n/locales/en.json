@@ -27333,7 +27333,8 @@
       "missing": "That conversation isn't open on this computer.",
       "unreachable": "Couldn't reach {{hosts}}. The bot may be there; open the link again once it's back.",
       "pick": "More than one computer has a bot for this link: {{hosts}}. Open it from the sidebar.",
-      "updateNeeded": "Update Orca on {{hosts}} to open this bot here."
+      "updateNeeded": "Update Orca on {{hosts}} to open this bot here.",
+      "itemNotThisBot": "That item belongs to another bot."
     },
     "activity": {
       "title": "Activity",

@@ -6,7 +6,8 @@ import { registerBotDeepLinkIpcBridge } from './bot-deep-link-ipc-bridge'
 const mocks = vi.hoisted(() => ({
   toastInfo: vi.fn(),
   activateChat: vi.fn(async () => true),
-  openBotLinkHome: vi.fn(async () => {}),
+  openBotLinkHome: vi.fn<() => Promise<{ hostId: string; id: string } | null>>(async () => null),
+  openBotItemLink: vi.fn(),
   redeem: vi.fn<() => Promise<{ ok: boolean; error?: string }>>(async () => ({ ok: true })),
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
@@ -44,6 +45,9 @@ vi.mock('@/lib/bot-link-open', () => ({
   openAccessRequestLink: vi.fn()
 }))
 vi.mock('@/lib/bot-access-requests', () => ({ watchAccessRequests: () => () => {} }))
+vi.mock('@/components/bots/items/bot-item-link-open', () => ({
+  openBotItemLink: mocks.openBotItemLink
+}))
 vi.mock('sonner', () => ({
   toast: { info: mocks.toastInfo, success: mocks.toastSuccess, error: mocks.toastError }
 }))
@@ -123,6 +127,19 @@ describe('registerBotDeepLinkIpcBridge', () => {
     expect(consume).toHaveBeenCalledTimes(3)
     expect(mocks.openBotLinkHome).toHaveBeenCalledOnce()
     expect(mocks.toastInfo).not.toHaveBeenCalled()
+  })
+
+  it('opens a link’s item in the bot whose Home it opened', async () => {
+    const bot = { hostId: 'local', id: 'b1' }
+    mocks.openBotLinkHome.mockResolvedValueOnce(bot)
+    const { deliver } = stubPreload(null)
+    registerBotDeepLinkIpcBridge([])
+    await settle()
+
+    deliver({ kind: 'home', botId: 'b1', botItem: '42' })
+    await settle()
+
+    expect(mocks.openBotItemLink).toHaveBeenCalledExactlyOnceWith(bot, '42')
   })
 
   it('opens a native chat through the shared chat path', async () => {

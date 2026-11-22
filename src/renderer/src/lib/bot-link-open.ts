@@ -94,11 +94,12 @@ async function serverThreadSession(
  * Opens the bot on whichever computer lists it. `conversation`: this computer had no chat for the
  * link's thread, so a server's bot opens the server's chat for it. A thread no computer has a chat
  * for (its message never arrived, or the chat is gone) only says so: its Home is a different chat.
+ * Returns the bot whose Home it opened, so a link's item can open beside it.
  */
 export async function openBotLinkHome(
   botId: string,
   conversation: LinkConversation | null
-): Promise<void> {
+): Promise<Bot | null> {
   await refreshBots()
   const resolution = resolveBotLink(botId, botLinkHostAnswers())
   switch (resolution.kind) {
@@ -106,13 +107,13 @@ export async function openBotLinkHome(
       const { hostId, bot } = resolution.match
       if (!conversation) {
         await openBotHomeTab(bot)
-        return
+        return bot
       }
       const sessionId =
         hostId === LOCAL_EXECUTION_HOST_ID ? null : await serverThreadSession(bot, conversation)
       if (!sessionId) {
         sayThreadMissing()
-        return
+        return null
       }
       await activateAiVaultStructuredSession(
         {
@@ -121,7 +122,7 @@ export async function openBotLinkHome(
         undefined,
         botTarget(bot)
       )
-      return
+      return null
     }
     case 'pick':
       // Ids are random per computer, so two that match can't be told apart from the link.
@@ -132,22 +133,23 @@ export async function openBotLinkHome(
           { hosts: hostNames(resolution.matches.map((match) => match.hostId)) }
         )
       )
-      return
+      return null
     case 'unreachable':
       sayUnreachable(resolution.hostIds)
-      return
+      return null
     case 'update-needed':
       toast.info(
         translate('bots.deepLink.updateNeeded', 'Update Orca on {{hosts}} to open this bot here.', {
           hosts: hostNames(resolution.hostIds)
         })
       )
-      return
+      return null
     case 'missing':
       // An unknown or deleted bot opens nothing, as before bare links were read.
       if (conversation) {
         sayThreadMissing()
       }
+      return null
   }
 }
 
